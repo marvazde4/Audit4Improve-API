@@ -284,6 +284,22 @@ public class ExcelReportManager implements PersistenceManager, FileManager {
 	@Override
 	public void deleteReport(ReportI report) throws ReportNotDefinedException {
 		// TODO Auto-generated method stub
-
+		log.info("Eliminando informe excel");
+		if (report == null) {
+			throw new ReportNotDefinedException();
+		}
+		try {
+			sheet = wb.getSheet(report.getEntityId());
+			if (sheet != null) {
+				int index = wb.getSheetIndex(sheet);
+				wb.removeSheetAt(index);
+		}
+		}catch (Exception e) { 
+			
+			e.printStackTrace();
+		
+		
+		
+	}
 	}
 }
