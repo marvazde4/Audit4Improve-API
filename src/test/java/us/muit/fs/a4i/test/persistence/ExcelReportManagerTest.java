@@ -33,6 +33,7 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 import us.muit.fs.a4i.persistence.ExcelReportManager;
 import us.muit.fs.a4i.persistence.ReportFormaterI;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -105,7 +106,27 @@ class ExcelReportManagerTest {
 		}
 
 	}
-	
+		
+	/**
+	 * <p>Test para el m�todo de eliminar un informe en excel</p>
+	 * @throws java.lang.Exception
+	 * @author Mariana Reyes Henriquez
+	 */
+	@Test
+	void ExcelDelete() {
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
+		excelName= new String("excelTest");
+		underTest=new ExcelReportManager(excelPath,excelName);	
+		try {
+			log.info("Se intenta eliminar un fichero que no existe");
+			underTest.deleteReport(null);
+			fail("Deber�a haber lanzado una excepci�n");
+		} catch (ReportNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 	@Test
 	void CompruebaFuente() throws IOException, ReportNotDefinedException {
 		
