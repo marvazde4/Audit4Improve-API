@@ -30,6 +30,8 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 import us.muit.fs.a4i.persistence.ExcelReportManager;
 import us.muit.fs.a4i.persistence.ReportFormaterI;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 @ExtendWith(MockitoExtension.class)
 
 class ExcelReportManagerTest {
@@ -93,5 +95,27 @@ class ExcelReportManagerTest {
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	/**
+	 * <p>Test para el método de eliminar un informe en excel</p>
+	 * @throws java.lang.Exception
+	 * @author Mariana Reyes Henriquez
+	 */
+	@Test
+	void ExcelDelete() {
+		excelPath = new String("src" + File.separator + "test" + File.separator + "resources"+File.separator);
+		excelName= new String("excelTest");
+		underTest=new ExcelReportManager(excelPath,excelName);	
+		try {
+			log.info("Se intenta eliminar un fichero que no existe");
+			underTest.deleteReport(null);
+			fail("Debería haber lanzado una excepción");
+		} catch (ReportNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
