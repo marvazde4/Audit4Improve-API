@@ -1,0 +1,28 @@
+name: Flujo de trabajo nuevo
+on:
+  workflow_dispatch: #se dispara manualmente
+  issues:
+    types: [opened]  #Se dispara al crear un nuevo issue
+  project_column:
+    types: [moved] #se dispara al moverse entre columnas
+  fork: #se dispara cuando ocurre un fork en el repositorio
+  create: #se dispara cuando alguien crea una nueva rama en el repositorio
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_LOGIN: ${{ github.actor }}
+      GITHUB_PACKAGES: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clonando el repositorio y estableciendo el espacio de trabajo
+        uses: actions/checkout@v3
+      - name: Configurando java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '16'
+      - name: Construyendo y probando el código
+        run: |
+          chmod +x gradlew        
+          ./gradlew assemble
