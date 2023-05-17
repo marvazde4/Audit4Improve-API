@@ -1,6 +1,6 @@
 name: Demostrador para Acciones GitHub
 on: 
-  push:
+  #push:
   workflow_dispatch:
 jobs:
   Explore-GitHub-Actions:
