@@ -5,24 +5,23 @@ on:
     types: [opened]  #Se dispara al crear un nuevo issue
   project_column:
     types: [moved] #se dispara al moverse entre columnas
-  fork: #se dispara cuando ocurre un fork en el repositorio
-  create: #se dispara cuando alguien crea una nueva rama en el repositorio
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_LOGIN: ${{ github.actor }}
-      GITHUB_PACKAGES: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-      - name: Clonando el repositorio y estableciendo el espacio de trabajo
-        uses: actions/checkout@v3
-      - name: Configurando java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '16'
-      - name: Construyendo y probando el código
-        run: |
-          chmod +x gradlew        
-          ./gradlew assemble
+    - uses: actions/checkout@v3
+
+    - name: Cache Primes
+      id: cache-primes
+      uses: actions/cache@v3 #lmacenar en caché las dependencias
+      with:
+        path: prime-numbers
+        key: ${{ runner.os }}-primes
+
+    - name: Generate Prime Numbers
+      if: steps.cache-primes.outputs.cache-hit != 'true'
+      run: /generate-primes.sh -d prime-numbers
+
+    - name: Use Prime Numbers
+      run: /primes.sh -d prime-numbers
